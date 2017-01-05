@@ -39,7 +39,11 @@ api routes, for both demo purposes and to bootstrap an application easily.
 
 - Clone repo
 - Run `npm install`
-- Setup environment variables in a .env file (see dotenv)
+- Setup environment variables in a .env file (see dotenv). The following
+environment varibles must be set:
+  - NODE_ENV: should be either `test`, `dev`, `staging` or `prod`
+  - COOKIE_SECRET: the secret used to protect the cookie data used in
+  authentication (required only for `prod` environment)
 - Run `npm run`
 
 ## Contributing
