@@ -13,7 +13,7 @@ internals.db = require('./users.json')
 
 exports.getValidatedUser = function (username, password) {
   return new Promise((resolve, reject) => {
-    const user = internals[username]
+    const user = internals.db[username]
 
     if (!user) {
       return resolve()
