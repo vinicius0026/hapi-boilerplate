@@ -51,6 +51,10 @@ environment varibles must be set:
 Feel free to clone and make the changes you want. If you want to commit them back
 to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
 
+## License
+
+MIT License
+
 ## TODO
 
 - implement users API
