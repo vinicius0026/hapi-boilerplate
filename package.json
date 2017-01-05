@@ -1,0 +1,39 @@
+{
+  "name": "hapi-boilerplate",
+  "version": "0.0.0",
+  "description": "Hapijs Server boilerplate",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "lab -v -c -a code -L",
+    "start": "node lib/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinicius0026/hapi-boilerplate.git"
+  },
+  "keywords": [
+    "hapijs",
+    "boilerplate"
+  ],
+  "author": "Vinicius Teixeira <vinicius0026@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vinicius0026/hapi-boilerplate/issues"
+  },
+  "homepage": "https://github.com/vinicius0026/hapi-boilerplate#readme",
+  "devDependencies": {
+    "code": "^4.0.0",
+    "lab": "^11.2.1",
+    "standard": "^8.6.0"
+  },
+  "dependencies": {
+    "boom": "^4.2.0",
+    "glue": "^4.1.0",
+    "hapi": "^16.1.0",
+    "hapi-auth-cookie": "^6.1.1",
+    "inert": "^4.1.0",
+    "joi": "^10.1.0",
+    "lout": "^9.2.0",
+    "vision": "^4.1.1"
+  }
+}
