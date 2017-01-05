@@ -4,9 +4,9 @@
   "description": "Hapijs Server boilerplate",
   "main": "lib/index.js",
   "scripts": {
-    "test": "lab -v -c -a code -L",
+    "test": "NODE_ENV=test lab -v -c -a code -L",
     "coveralls": "echo repo_token: $COVERALLS_HAPI_BOILERPLATE > .coveralls.yml",
-    "coverage": "npm run coveralls && lab -c -a code -r lcov -o lcov.info && cat ./lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm ./lcov.info .coveralls.yml",
+    "coverage": "NODE_ENV=test npm run coveralls && lab -c -a code -r lcov -o lcov.info && cat ./lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm ./lcov.info .coveralls.yml",
     "start": "node lib/start.js"
   },
   "repository": {
@@ -31,6 +31,8 @@
   },
   "dependencies": {
     "boom": "^4.2.0",
+    "confidence": "^3.0.2",
+    "dotenv": "^2.0.0",
     "glue": "^4.1.0",
     "hapi": "^16.1.0",
     "hapi-auth-cookie": "^6.1.1",
