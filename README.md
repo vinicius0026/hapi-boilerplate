@@ -11,21 +11,41 @@ grouping files by resource (for the API).
 
 Leverages the hapi ecosystem to a great extent:
 
-- Lab and Code for testing
-- Glue for server configuration and plugin registration
-- hapi-cookie-auth for authentication
-- Hapi builtin authorization scheme
-- Crumb for CSRF prevention
-- Joi for validation
-- Boom for http error responses
-- Good for logging
-- Lout (+ Vision & Inert) for automatic documentation
+- [Lab](https://github.com/hapijs/lab) and [Code](https://github.com/hapijs/code)
+for testing
+- [Glue](https://github.com/hapijs/glue) for server configuration and plugin
+registration
+- [hapi-auth-cookie](https://github.com/hapijs/hapi-auth-cookie) for
+authentication
+- Hapi builtin authorization via scope (see
+[route options](https://hapijs.com/api#route-options) in Hapi API docs for
+details)
+- [Confidence](https://github.com/hapijs/confidence) for config management
+- [Crumb](https://github.com/hapijs/crumb) for CSRF prevention
+- [Joi](https://github.com/hapijs/joi) for validation
+- [Boom](https://github.com/hapijs/boom) for http error responses
+- [Good](https://github.com/hapijs/good) for logging
+- [Lout](https://github.com/hapijs/lout) (+
+[Vision](https://github.com/hapijs/vision) &
+[Inert](https://github.com/hapijs/inert)) for automatic documentation
 
 Uses a fake json database in order to be DB agnostic, but it can easily be
 used with any DB, with small changes.
 
 This boilerplate has authentication and authorization setup, and user management
 api routes, for both demo purposes and to bootstrap an application easily.
+
+## Running locally
+
+- Clone repo
+- Run `npm install`
+- Setup environment variables in a .env file (see dotenv)
+- Run `npm run`
+
+## Contributing
+
+Feel free to clone and make the changes you want. If you want to commit them back
+to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
 
 ## TODO
 
