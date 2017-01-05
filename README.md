@@ -49,6 +49,4 @@ to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
 
 ## TODO
 
-- create config file
 - implement users API
-- implement logging with Good
