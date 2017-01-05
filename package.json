@@ -5,6 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "lab -v -c -a code -L",
+    "coveralls": "echo repo_token: $COVERALLS_HAPI_BOILERPLATE > .coveralls.yml",
+    "coverage": "npm run coveralls && lab -c -a code -r lcov -o lcov.info && cat ./lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm ./lcov.info .coveralls.yml",
     "start": "node lib/start.js"
   },
   "repository": {
@@ -23,6 +25,7 @@
   "homepage": "https://github.com/vinicius0026/hapi-boilerplate#readme",
   "devDependencies": {
     "code": "^4.0.0",
+    "coveralls": "^2.11.15",
     "lab": "^11.2.1",
     "standard": "^8.6.0"
   },

@@ -1,5 +1,6 @@
 # Hapijs Boilerplate
 
+[![Build Status](https://travis-ci.org/vinicius0026/hapi-boilerplate.svg?branch=master)](https://travis-ci.org/vinicius0026/hapi-boilerplate)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Yet another hapi boilerplate for a RESTFul server. Opinionated.
