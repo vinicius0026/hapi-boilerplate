@@ -32,4 +32,3 @@ api routes, for both demo purposes and to bootstrap an application easily.
 - create config file
 - implement users API
 - implement logging with Good
-- implement API documentation with Lout
