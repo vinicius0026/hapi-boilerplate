@@ -16,7 +16,7 @@ module.exports = {
 }
 function getValidatedUser (username, password) {
   return new Promise((resolve, reject) => {
-    const user = internals.db[username]
+    const user = internals.db.find(user => user.username === username)
 
     if (!user) {
       return resolve()

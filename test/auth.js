@@ -24,7 +24,7 @@ describe('Auth', () => {
       .then(_server => {
         server = _server
 
-        const admin = internals.User['admin']
+        const admin = internals.User[0]
 
         return server.inject({
           method: 'POST',
@@ -48,7 +48,7 @@ describe('Auth', () => {
       .then(_server => {
         server = _server
 
-        const admin = internals.User['admin']
+        const admin = internals.User[0]
 
         return server.inject({
           method: 'POST',
@@ -94,7 +94,7 @@ describe('Auth', () => {
       .then(_server => {
         server = _server
 
-        const admin = internals.User['admin']
+        const admin = internals.User[0]
 
         return server.inject({
           method: 'POST',

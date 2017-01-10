@@ -22,7 +22,7 @@ describe('Request Logging', () => {
       .then(_server => {
         server = _server
 
-        const admin = Users['admin']
+        const admin = Users[0]
 
         server.on('request', (request, event, tags) => {
           const logData = event.data
