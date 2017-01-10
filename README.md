@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/vinicius0026/hapi-boilerplate.svg?branch=master)](https://travis-ci.org/vinicius0026/hapi-boilerplate)
 [![Coverage Status](https://coveralls.io/repos/github/vinicius0026/hapi-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/vinicius0026/hapi-boilerplate?branch=master)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![Dependencies](https://david-dm.org/vinicius0026/hapi-boilerplate.svg)](https://david-dm.org/vinicius0026/hapi-boilerplate)
 
 Yet another hapi boilerplate for a RESTFul server. Opinionated.
 
