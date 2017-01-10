@@ -11,7 +11,10 @@ const internals = {}
 
 internals.db = require('./users.json')
 
-exports.getValidatedUser = function (username, password) {
+module.exports = {
+  getValidatedUser,
+}
+function getValidatedUser (username, password) {
   return new Promise((resolve, reject) => {
     const user = internals.db[username]
 
