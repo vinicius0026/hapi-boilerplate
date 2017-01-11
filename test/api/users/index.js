@@ -73,7 +73,6 @@ describe('User API Tests', () => {
           })
         })
         .then(res => {
-          console.log('res.result', res.result)
           expect(res.statusCode).to.equal(500)
           server.stop(done)
         })
