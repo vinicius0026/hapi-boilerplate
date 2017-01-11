@@ -26,20 +26,20 @@ describe('User API Tests', () => {
       Server.init(internals.manifest, internals.composeOptions)
         .then(_server => {
           server = _server
-          const user = internals.User[0]
 
-          return internals.authenticateUser(server, user)
+          return server.inject({
+            method: 'POST',
+            url: '/api/users',
+            payload: {
+              username: 'new-user',
+              password: 'some-passsss',
+              scope: ['user']
+            },
+            credentials: {
+              scope: ['admin']
+            }
+          })
         })
-        .then(cookie => server.inject({
-          method: 'POST',
-          url: '/api/users',
-          payload: {
-            username: 'new-user',
-            password: 'some-passsss',
-            scope: ['user']
-          },
-          headers: { cookie }
-        }))
         .then(res => {
           expect(res.statusCode).to.equal(201)
           expect(res.result.ok).to.equal(true)
@@ -56,20 +56,20 @@ describe('User API Tests', () => {
       Server.init(internals.manifest, internals.composeOptions)
         .then(_server => {
           server = _server
-          const user = internals.User[0]
 
-          return internals.authenticateUser(server, user)
+          return server.inject({
+            method: 'POST',
+            url: '/api/users',
+            payload: {
+              username: 'admin',
+              password: 'some-passsss',
+              scope: ['user']
+            },
+            credentials: {
+              scope: ['admin']
+            }
+          })
         })
-        .then(cookie => server.inject({
-          method: 'POST',
-          url: '/api/users',
-          payload: {
-            username: 'admin',
-            password: 'some-passsss',
-            scope: ['user']
-          },
-          headers: { cookie }
-        }))
         .then(res => {
           expect(res.statusCode).to.equal(400)
           expect(res.result.message).to.equal('Username already taken')
@@ -82,7 +82,6 @@ describe('User API Tests', () => {
   describe('Read User Tests', () => {
     let server
     let userId
-    let authCookie
 
     const user = {
       username: 'userrr',
@@ -95,17 +94,13 @@ describe('User API Tests', () => {
         .then(_server => {
           server = _server
 
-          const user = internals.User[0]
-
-          return internals.authenticateUser(server, user)
-        })
-        .then(cookie => {
-          authCookie = cookie
           return server.inject({
             method: 'POST',
             url: '/api/users',
             payload: user,
-            headers: { cookie }
+            credentials: {
+              scope: ['admin']
+            }
           })
         })
         .then(res => {
@@ -120,7 +115,9 @@ describe('User API Tests', () => {
     it('Reads an user', done => {
       server.inject({
         url: `/api/users/${userId}`,
-        headers: { cookie: authCookie }
+        credentials: {
+          scope: ['user']
+        }
       })
       .then(res => {
         expect(res.statusCode).to.equal(200)
@@ -136,7 +133,9 @@ describe('User API Tests', () => {
     it('Returns 404 if user doesnt exist', done => {
       server.inject({
         url: '/api/users/99',
-        headers: { cookie: authCookie }
+        credentials: {
+          scope: ['user']
+        }
       })
       .then(res => {
         expect(res.statusCode).to.equal(404)
@@ -150,7 +149,6 @@ describe('User API Tests', () => {
   describe('Update User Tests', () => {
     let server
     let userId
-    let authCookie
 
     const user = {
       username: 's0m&n4m&',
@@ -163,21 +161,19 @@ describe('User API Tests', () => {
         .then(_server => {
           server = _server
 
-          const user = internals.User[0]
-
-          return internals.authenticateUser(server, user)
-        })
-        .then(cookie => {
-          authCookie = cookie
           return server.inject({
             method: 'POST',
             url: '/api/users',
             payload: user,
-            headers: { cookie }
+            credentials: {
+              scope: ['admin']
+            }
           })
         })
         .then(res => {
+          console.log('res.result', res.result)
           userId = res.result.message.match(/^Created user with id (\d+)$/)[1]
+          console.log('userId', userId)
         })
         .then(done)
         .catch(done)
@@ -189,7 +185,9 @@ describe('User API Tests', () => {
       server.inject({
         method: 'PUT',
         url: `/api/users/${userId}`,
-        headers: { cookie: authCookie },
+        credentials: {
+          scope: ['admin']
+        },
         payload: {
           scope: ['user', 'admin']
         }
@@ -202,7 +200,9 @@ describe('User API Tests', () => {
         return server.inject({
           method: 'GET',
           url: `/api/users/${userId}`,
-          headers: { cookie: authCookie }
+          credentials: {
+            scope: ['user']
+          }
         })
       })
       .then(res => {
@@ -217,7 +217,9 @@ describe('User API Tests', () => {
       server.inject({
         method: 'PUT',
         url: `/api/users/99`,
-        headers: { cookie: authCookie },
+        credentials: {
+          scope: ['admin']
+        },
         payload: {
           scope: ['user', 'admin']
         }
@@ -231,25 +233,6 @@ describe('User API Tests', () => {
     })
   })
 })
-
-internals.authenticateUser = function (server, credentials) {
-  return server.inject({
-    method: 'POST',
-    url: '/login',
-    payload: {
-      username: credentials.username,
-      password: credentials.password
-    }
-  })
-  .then(res => {
-    const header = res.headers['set-cookie']
-    /* eslint-disable */
-    const cookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/)
-    /* eslint-enable */
-
-    return cookie[0]
-  })
-}
 
 internals.manifest = {
   connections: [
