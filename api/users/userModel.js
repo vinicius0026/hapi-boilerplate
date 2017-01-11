@@ -7,13 +7,30 @@
 
 'use strict'
 
+const Boom = require('boom')
+
 const internals = {}
 
 internals.db = require('./users.json')
 
 module.exports = {
   getValidatedUser,
+  create,
 }
+
+function create (data) {
+  return new Promise((resolve, reject) => {
+    // check for username duplication:
+    if (internals.db.find(user => user.username === data.username)) {
+      return reject(Boom.badRequest('Username already taken'))
+    }
+
+    const user = Object.assign({}, {id: internals.db.length + 1}, data)
+    internals.db.push(user)
+    resolve(user)
+  })
+}
+
 function getValidatedUser (username, password) {
   return new Promise((resolve, reject) => {
     const user = internals.db.find(user => user.username === username)
