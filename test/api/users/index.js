@@ -146,6 +146,90 @@ describe('User API Tests', () => {
       .catch(done)
     })
   })
+
+  describe('Update User Tests', () => {
+    let server
+    let userId
+    let authCookie
+
+    const user = {
+      username: 's0m&n4m&',
+      password: 'asdlfk',
+      scope: ['user']
+    }
+
+    before(done => {
+      Server.init(internals.manifest, internals.composeOptions)
+        .then(_server => {
+          server = _server
+
+          const user = internals.User[0]
+
+          return internals.authenticateUser(server, user)
+        })
+        .then(cookie => {
+          authCookie = cookie
+          return server.inject({
+            method: 'POST',
+            url: '/api/users',
+            payload: user,
+            headers: { cookie }
+          })
+        })
+        .then(res => {
+          userId = res.result.message.match(/^Created user with id (\d+)$/)[1]
+        })
+        .then(done)
+        .catch(done)
+    })
+
+    after(done => server.stop(done))
+
+    it('Updates an user', done => {
+      server.inject({
+        method: 'PUT',
+        url: `/api/users/${userId}`,
+        headers: { cookie: authCookie },
+        payload: {
+          scope: ['user', 'admin']
+        }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.ok).to.equal(true)
+        expect(res.result.message).to.equal(`Updated user ${userId}`)
+
+        return server.inject({
+          method: 'GET',
+          url: `/api/users/${userId}`,
+          headers: { cookie: authCookie }
+        })
+      })
+      .then(res => {
+        const user = res.result
+        expect(user.scope).to.equal(['user', 'admin'])
+        done()
+      })
+      .catch(done)
+    })
+
+    it('returns 404 if user doesnt exist', done => {
+      server.inject({
+        method: 'PUT',
+        url: `/api/users/99`,
+        headers: { cookie: authCookie },
+        payload: {
+          scope: ['user', 'admin']
+        }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(404)
+        expect(res.result.message).to.equal('User not found')
+        done()
+      })
+      .catch(done)
+    })
+  })
 })
 
 internals.authenticateUser = function (server, credentials) {

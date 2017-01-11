@@ -45,6 +45,20 @@ internals.registerRoutes = function (server, next) {
         description: 'Read user data',
         handler: Handlers.read
       }
+    },
+    {
+      method: 'PUT',
+      path: `${internals.basePath}/{id}`,
+      config: {
+        description: 'Update user info',
+        handler: Handlers.update,
+        validate: {
+          payload: {
+            password: User.model.password,
+            scope: User.model.scope
+          }
+        }
+      }
     }
   ])
 

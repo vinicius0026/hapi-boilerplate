@@ -1,7 +1,7 @@
 /*
   This is a fake implementation, with json + memory database stub, not suitable
   for use in production. Replace this with a real database connection and
-  lookups and don't forget to critograph the users passwords and to remove
+  lookups and don't forget to secure user's passwords and to remove
   sensitive data like salt and password hash when returning users from this file
 */
 
@@ -15,6 +15,7 @@ const internals = {}
 internals.db = require('./users.json')
 
 internals.model = {
+  id: Joi.number().min(0),
   username: Joi.string().min(3).max(50).description('User\'s username, used for login'),
   password: Joi.string().min(3).max(50).description('User\'s password, used for login'),
   scope: Joi.array().items(Joi.string().valid('user', 'admin'))
@@ -59,6 +60,20 @@ function read (id) {
 }
 
 function update (id, data) {
+  return new Promise((resolve, reject) => {
+    const index = internals.db.findIndex(user => user.id === Number(id))
+    const user = internals.db[index]
+
+    if (!user) {
+      return reject(Boom.notFound('User not found'))
+    }
+
+    const updatedUser = Object.assign(user, data)
+
+    internals.db[index] = updatedUser
+
+    resolve(updatedUser)
+  })
 }
 
 function remove (id) {}
