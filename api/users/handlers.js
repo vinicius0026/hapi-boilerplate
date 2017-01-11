@@ -2,25 +2,31 @@
 
 const Boom = require('boom')
 
-const User = require('./model')
+const Model = require('./model')
 
-module.exports = {
-  create,
-  read,
-  update,
-  remove,
-  list
+const internals = {}
+
+module.exports = function (options) {
+  internals.model = Model(options)
+
+  return {
+    create,
+    read,
+    update,
+    remove,
+    list
+  }
 }
 
 function create (request, reply) {
-  return User.create(request.payload)
+  return internals.model.create(request.payload)
     .then(user => reply({ ok: true, message: `Created user with id ${user.id}` }).code(201))
     .catch(err => reply(Boom.wrap(err)))
 }
 
 function read (request, reply) {
   const id = request.params.id
-  return User.read(id)
+  return internals.model.read(id)
     .then(reply)
     .catch(err => reply(Boom.wrap(err)))
 }
@@ -28,20 +34,20 @@ function read (request, reply) {
 function update (request, reply) {
   const id = request.params.id
   const payload = request.payload
-  return User.update(id, payload)
+  return internals.model.update(id, payload)
     .then(user => reply({ ok: true, message: `Updated user ${user.id}` }))
     .catch(err => reply(Boom.wrap(err)))
 }
 
 function remove (request, reply) {
   const id = request.params.id
-  return User.remove(id)
+  return internals.model.remove(id)
     .then(() => reply().code(204))
     .catch(err => reply(Boom.wrap(err)))
 }
 
 function list (request, reply) {
-  return User.list()
+  return internals.model.list()
     .then(reply)
     .catch(err => reply(Boom.wrap(err)))
 }

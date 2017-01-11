@@ -1,6 +1,6 @@
 'use strict'
 
-const User = require('./model')
+const User = require('./model')()
 const Handlers = require('./handlers')
 
 const internals = {}
@@ -8,6 +8,8 @@ const internals = {}
 internals.basePath = '/api/users'
 
 exports.register = (server, options, next) => {
+  internals.handlers = Handlers(options)
+
   server.dependency('Auth', internals.registerRoutes)
   next()
 }
@@ -30,7 +32,7 @@ internals.registerRoutes = function (server, next) {
             scope: User.model.scope.default(['user'])
           }
         },
-        handler: Handlers.create
+        handler: internals.handlers.create
       }
     },
     {
@@ -43,7 +45,7 @@ internals.registerRoutes = function (server, next) {
           }
         },
         description: 'Read user data',
-        handler: Handlers.read
+        handler: internals.handlers.read
       }
     },
     {
@@ -51,7 +53,7 @@ internals.registerRoutes = function (server, next) {
       path: `${internals.basePath}/{id}`,
       config: {
         description: 'Update user info',
-        handler: Handlers.update,
+        handler: internals.handlers.update,
         validate: {
           payload: {
             password: User.model.password,
@@ -65,7 +67,7 @@ internals.registerRoutes = function (server, next) {
       path: `${internals.basePath}/{id}`,
       config: {
         description: 'Removes user',
-        handler: Handlers.remove
+        handler: internals.handlers.remove
       }
     },
     {
@@ -78,7 +80,7 @@ internals.registerRoutes = function (server, next) {
           }
         },
         description: 'Lists users',
-        handler: Handlers.list
+        handler: internals.handlers.list
       }
     }
   ])

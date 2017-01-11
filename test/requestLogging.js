@@ -9,7 +9,7 @@ const describe = lab.experiment
 const expect = Code.expect
 const it = lab.test
 
-const UserModel = require('../api/users/model')
+const UserModel = require('../api/users/model')()
 const Users = require('../api/users/users.json')
 const Server = require('../lib')
 

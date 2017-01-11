@@ -22,14 +22,20 @@ internals.model = {
     .description('User\'s role, used for determining what the user will be able to do in the system')
 }
 
-module.exports = {
-  getValidatedUser,
-  model: internals.model,
-  create,
-  read,
-  update,
-  remove,
-  list
+module.exports = function (_di) {
+  const di = _di || {}
+
+  Object.assign(internals, di)
+
+  return {
+    getValidatedUser,
+    model: internals.model,
+    create,
+    read,
+    update,
+    remove,
+    list
+  }
 }
 
 function create (data) {
