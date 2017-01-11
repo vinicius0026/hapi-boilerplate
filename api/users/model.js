@@ -91,7 +91,12 @@ function remove (id) {
   })
 }
 
-function list () {}
+function list () {
+  return new Promise((resolve, reject) => {
+    const users = internals.db.map(user => Object.assign({}, user, { password: undefined }))
+    resolve(users)
+  })
+}
 
 function getValidatedUser (username, password) {
   return new Promise((resolve, reject) => {

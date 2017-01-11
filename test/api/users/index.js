@@ -19,6 +19,32 @@ const internals = {}
 internals.User = require('../../../api/users/users.json')
 
 describe('User API Tests', () => {
+  describe('List Users Tests', () => {
+    it('Lists users if logged as user', done => {
+      let server
+
+      Server.init(internals.manifest, internals.composeOptions)
+        .then(_server => {
+          server = _server
+
+          return server.inject({
+            method: 'GET',
+            url: '/api/users',
+            credentials: {
+              scope: ['user']
+            }
+          })
+          .then(res => {
+            expect(res.statusCode).to.equal(200)
+            const list = res.result
+            expect(list).to.have.length(2)
+            server.stop(done)
+          })
+          .catch(done)
+        })
+    })
+  })
+
   describe('Create User Tests', () => {
     it('creates user if authenticated as admin', done => {
       let server

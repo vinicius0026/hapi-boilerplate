@@ -67,6 +67,19 @@ internals.registerRoutes = function (server, next) {
         description: 'Removes user',
         handler: Handlers.remove
       }
+    },
+    {
+      method: 'GET',
+      path: `${internals.basePath}`,
+      config: {
+        auth: {
+          access: {
+            scope: ['user', 'admin']
+          }
+        },
+        description: 'Lists users',
+        handler: Handlers.list
+      }
     }
   ])
 

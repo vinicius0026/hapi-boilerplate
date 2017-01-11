@@ -8,7 +8,8 @@ module.exports = {
   create,
   read,
   update,
-  remove
+  remove,
+  list
 }
 
 function create (request, reply) {
@@ -36,5 +37,11 @@ function remove (request, reply) {
   const id = request.params.id
   return User.remove(id)
     .then(() => reply().code(204))
+    .catch(err => reply(Boom.wrap(err)))
+}
+
+function list (request, reply) {
+  return User.list()
+    .then(reply)
     .catch(err => reply(Boom.wrap(err)))
 }
