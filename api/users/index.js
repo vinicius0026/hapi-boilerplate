@@ -1,7 +1,6 @@
 'use strict'
 
-const Joi = require('joi')
-
+const User = require('./model')
 const Handlers = require('./handlers')
 
 const internals = {}
@@ -26,13 +25,9 @@ internals.registerRoutes = function (server, next) {
         description: 'Create users',
         validate: {
           payload: {
-            username: Joi.string().min(3).max(50).required()
-              .description('User\'s username, used for login'),
-            password: Joi.string().min(3).max(50).required()
-              .description('User\'s password, used for login'),
-            scope: Joi.array().items(Joi.string().valid('user', 'admin'))
-              .default(['user'])
-              .description('User\'s role, used for determining what the user will be able to do in the system')
+            username: User.model.username.required(),
+            password: User.model.password.required(),
+            scope: User.model.scope.default(['user'])
           }
         },
         handler: Handlers.create
