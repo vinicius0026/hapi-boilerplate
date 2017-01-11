@@ -37,6 +37,19 @@ internals.registerRoutes = function (server, next) {
         },
         handler: Handlers.create
       }
+    },
+    {
+      method: 'GET',
+      path: `${internals.basePath}/{id}`,
+      config: {
+        auth: {
+          access: {
+            scope: ['user', 'admin']
+          }
+        },
+        description: 'Read user data',
+        handler: Handlers.read
+      }
     }
   ])
 

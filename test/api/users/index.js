@@ -8,6 +8,8 @@ const lab = exports.lab = Lab.script()
 const describe = lab.experiment
 const expect = Code.expect
 const it = lab.test
+const before = lab.before
+const after = lab.after
 
 const UserModel = require('../../../api/users/userModel')
 const Server = require('../../../lib')
@@ -74,6 +76,73 @@ describe('User API Tests', () => {
           server.stop(done)
         })
         .catch(done)
+    })
+  })
+
+  describe('Read User Tests', () => {
+    let server
+    let userId
+    let authCookie
+
+    const user = {
+      username: 'userrr',
+      password: 'some-passs',
+      role: ['user']
+    }
+
+    before(done => {
+      Server.init(internals.manifest, internals.composeOptions)
+        .then(_server => {
+          server = _server
+
+          const user = internals.User[0]
+
+          return internals.authenticateUser(server, user)
+        })
+        .then(cookie => {
+          authCookie = cookie
+          return server.inject({
+            method: 'POST',
+            url: '/api/users',
+            payload: user,
+            headers: { cookie }
+          })
+        })
+        .then(res => {
+          userId = res.result.message.match(/^Created user with id (\d+)$/)[1]
+        })
+        .then(done)
+        .catch(done)
+    })
+
+    after(done => server.stop(done))
+
+    it('Reads an user', done => {
+      server.inject({
+        url: `/api/users/${userId}`,
+        headers: { cookie: authCookie }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(200)
+        const _user = res.result
+        expect(_user.username).to.equal(user.username)
+        expect(_user.role).to.equal(user.role)
+        done()
+      })
+      .catch(done)
+    })
+
+    it('Returns 404 if user doesnt exist', done => {
+      server.inject({
+        url: '/api/users/99',
+        headers: { cookie: authCookie }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(404)
+        expect(res.result.message).to.equal('User not found')
+        done()
+      })
+      .catch(done)
     })
   })
 })

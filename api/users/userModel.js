@@ -16,6 +16,10 @@ internals.db = require('./users.json')
 module.exports = {
   getValidatedUser,
   create,
+  read,
+  update,
+  remove,
+  list
 }
 
 function create (data) {
@@ -30,6 +34,24 @@ function create (data) {
     resolve(user)
   })
 }
+
+function read (id) {
+  return new Promise((resolve, reject) => {
+    const user = internals.db.find(user => user.id === Number(id))
+
+    if (!user) {
+      return reject(Boom.notFound('User not found'))
+    }
+
+    resolve(user)
+  })
+}
+
+function update (id, data) {}
+
+function remove (id) {}
+
+function list () {}
 
 function getValidatedUser (username, password) {
   return new Promise((resolve, reject) => {
