@@ -8,13 +8,22 @@
 'use strict'
 
 const Boom = require('boom')
+const Joi = require('joi')
 
 const internals = {}
 
 internals.db = require('./users.json')
 
+internals.model = {
+  username: Joi.string().min(3).max(50).description('User\'s username, used for login'),
+  password: Joi.string().min(3).max(50).description('User\'s password, used for login'),
+  scope: Joi.array().items(Joi.string().valid('user', 'admin'))
+    .description('User\'s role, used for determining what the user will be able to do in the system')
+}
+
 module.exports = {
   getValidatedUser,
+  model: internals.model,
   create,
   read,
   update,
@@ -49,7 +58,8 @@ function read (id) {
   })
 }
 
-function update (id, data) {}
+function update (id, data) {
+}
 
 function remove (id) {}
 

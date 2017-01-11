@@ -2,7 +2,7 @@
 
 const Boom = require('boom')
 
-const User = require('./userModel')
+const User = require('./model')
 
 module.exports = {
   create,

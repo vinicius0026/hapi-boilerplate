@@ -10,7 +10,7 @@ const expect = Code.expect
 const it = lab.test
 
 const Server = require('../lib')
-const UserModel = require('../api/users/userModel')
+const UserModel = require('../api/users/model')
 
 const internals = {}
 

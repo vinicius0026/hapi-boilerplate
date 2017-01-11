@@ -11,7 +11,7 @@ const it = lab.test
 const before = lab.before
 const after = lab.after
 
-const UserModel = require('../../../api/users/userModel')
+const UserModel = require('../../../api/users/model')
 const Server = require('../../../lib')
 
 const internals = {}
