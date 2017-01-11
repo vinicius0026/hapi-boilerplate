@@ -59,6 +59,14 @@ internals.registerRoutes = function (server, next) {
           }
         }
       }
+    },
+    {
+      method: 'DELETE',
+      path: `${internals.basePath}/{id}`,
+      config: {
+        description: 'Removes user',
+        handler: Handlers.remove
+      }
     }
   ])
 

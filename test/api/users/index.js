@@ -171,9 +171,7 @@ describe('User API Tests', () => {
           })
         })
         .then(res => {
-          console.log('res.result', res.result)
           userId = res.result.message.match(/^Created user with id (\d+)$/)[1]
-          console.log('userId', userId)
         })
         .then(done)
         .catch(done)
@@ -222,6 +220,83 @@ describe('User API Tests', () => {
         },
         payload: {
           scope: ['user', 'admin']
+        }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(404)
+        expect(res.result.message).to.equal('User not found')
+        done()
+      })
+      .catch(done)
+    })
+  })
+
+  describe('Remove User Tests', () => {
+    let server
+    let userId
+
+    const user = {
+      username: 'another-user',
+      password: 'asdlfk',
+      scope: ['user']
+    }
+
+    before(done => {
+      Server.init(internals.manifest, internals.composeOptions)
+        .then(_server => {
+          server = _server
+
+          return server.inject({
+            method: 'POST',
+            url: '/api/users',
+            payload: user,
+            credentials: {
+              scope: ['admin']
+            }
+          })
+        })
+        .then(res => {
+          userId = res.result.message.match(/^Created user with id (\d+)$/)[1]
+        })
+        .then(done)
+        .catch(done)
+    })
+
+    after(done => server.stop(done))
+
+    it('Removes an user', done => {
+      server.inject({
+        method: 'DELETE',
+        url: `/api/users/${userId}`,
+        credentials: {
+          scope: ['admin']
+        }
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(204)
+
+        return server.inject({
+          method: 'GET',
+          url: `/api/users/${userId}`,
+          credentials: {
+            scope: ['user']
+          }
+        })
+      })
+      .then(res => {
+        expect(res.statusCode).to.equal(404)
+        expect(res.result.message).to.equal('User not found')
+        done()
+      })
+      .catch(done)
+    })
+
+    it('returns 404 if user doesnt exist', done => {
+      server.inject({
+        method: 'DELETE',
+        url: `/api/users/99`,
+        credentials: {
+          scope: ['admin']
         }
       })
       .then(res => {

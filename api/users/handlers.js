@@ -7,7 +7,8 @@ const User = require('./model')
 module.exports = {
   create,
   read,
-  update
+  update,
+  remove
 }
 
 function create (request, reply) {
@@ -28,5 +29,12 @@ function update (request, reply) {
   const payload = request.payload
   return User.update(id, payload)
     .then(user => reply({ ok: true, message: `Updated user ${user.id}` }))
+    .catch(err => reply(Boom.wrap(err)))
+}
+
+function remove (request, reply) {
+  const id = request.params.id
+  return User.remove(id)
+    .then(() => reply().code(204))
     .catch(err => reply(Boom.wrap(err)))
 }
