@@ -102,8 +102,9 @@ file, which should be adapted acording to the DB used in a real project.
 
 - Clone repo
 - Run `npm install`
-- Setup environment variables in a .env file (see [dotenv](https://github.com/motdotla/dotenv)). The following
-environment varibles must be set:
+- Setup environment variables in a .env file
+(see [dotenv](https://github.com/motdotla/dotenv)). The following environment
+varibles must be set:
   - NODE_ENV: should be either `test`, `dev`, `staging` or `prod`
   - COOKIE_SECRET: the secret used to protect the cookie data used in
   authentication (required only for `prod` environment)
@@ -113,6 +114,11 @@ environment varibles must be set:
 
 Feel free to clone and make the changes you want. If you want to commit them back
 to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
+
+## Acnowledgement
+
+Much of the things implemented in this boilerplate where extracted from
+[Hapijs University](https://github.com/hapijs/university) repository.
 
 ## License
 
