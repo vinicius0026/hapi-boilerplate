@@ -39,7 +39,9 @@ function create (data) {
       return reject(Boom.badRequest('Username already taken'))
     }
 
-    const user = Object.assign({}, {id: internals.db.length + 1}, data)
+    const id = internals.db[internals.db.length - 1].id + 1
+
+    const user = Object.assign({}, { id }, data)
     internals.db.push(user)
     resolve(user)
   })
