@@ -43,7 +43,9 @@ function read (id) {
       return reject(Boom.notFound('User not found'))
     }
 
-    resolve(user)
+    const returnedUser = Object.assign({}, user, { password: undefined })
+
+    resolve(returnedUser)
   })
 }
 

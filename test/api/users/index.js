@@ -127,6 +127,7 @@ describe('User API Tests', () => {
         const _user = res.result
         expect(_user.username).to.equal(user.username)
         expect(_user.scope).to.equal(user.scope)
+        expect(_user.password).to.not.exist()
         done()
       })
       .catch(done)
