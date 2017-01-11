@@ -36,6 +36,68 @@ used with any DB, with small changes.
 This boilerplate has authentication and authorization setup, and user management
 api routes, for both demo purposes and to bootstrap an application easily.
 
+## Project Structure
+
+Hapijs Plugins are used to organize and modularize code. General purpose plugins
+go into `lib/` directory. API plugins go into `api/{resource}` directories.
+
+Plugins are wiredeup using Glue. All plugin loading logic is into `lib/manifest.js`
+file.
+
+For API resources, the directory contains 3 files: `index.js`, `handlers.js` and
+`model.js`
+
+Example:
+
+```
+ api
+ |- users
+    |- index.js
+    |- handlers.js
+    |- model.js
+```
+
+`index.js` is basically a router file, were plugin is declared and routes are
+registered into server.
+
+The router handlers are declared in `handlers.js` file. This file exports a
+function that receives as argument the `options` parameter from plugin
+registration. This serves both to pass global parameters (such as db connections)
+to handlers and to do dependency injection in tests. An object with all handlers
+is returned. The handlers signature is allways `(request, reply)`.
+
+```javascript
+const Handlers = require('./handlers')
+
+const options = {
+  db: someDBStub
+}
+
+let handlers = Handlers(options)
+
+console.log('handlers', handlers)
+// {
+//    create: function (request, reply) {...},
+//    read: function (request, reply) {...},
+//    ...
+// }
+```
+
+The handlers interact with the Model, where businness logic should be
+encapsulated, such as validations (other than payload validation, which is done
+at router level), DB operations and such likes. The model file also exports a
+function which receives the options object passed to Handlers function, and
+returns an object with all model operations, such as basic CRUD functionality.
+
+All model function return promises.
+
+The model also returns a blueprint object, used for payload validation in
+router.
+
+To keep this boilerplate DB agnostic, an in-memory db is used. This is not
+intended for production use, but rather to set a basic interface for the model
+file, which should be adapted acording to the DB used in a real project.
+
 ## Running locally
 
 - Clone repo
@@ -55,7 +117,3 @@ to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
 ## License
 
 MIT License
-
-## TODO
-
-- implement users API
