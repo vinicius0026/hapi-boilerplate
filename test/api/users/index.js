@@ -36,7 +36,7 @@ describe('User API Tests', () => {
           payload: {
             username: 'new-user',
             password: 'some-passsss',
-            role: ['user']
+            scope: ['user']
           },
           headers: { cookie }
         }))
@@ -66,7 +66,7 @@ describe('User API Tests', () => {
           payload: {
             username: 'admin',
             password: 'some-passsss',
-            role: ['user']
+            scope: ['user']
           },
           headers: { cookie }
         }))
@@ -87,7 +87,7 @@ describe('User API Tests', () => {
     const user = {
       username: 'userrr',
       password: 'some-passs',
-      role: ['user']
+      scope: ['user']
     }
 
     before(done => {
@@ -126,7 +126,7 @@ describe('User API Tests', () => {
         expect(res.statusCode).to.equal(200)
         const _user = res.result
         expect(_user.username).to.equal(user.username)
-        expect(_user.role).to.equal(user.role)
+        expect(_user.scope).to.equal(user.scope)
         done()
       })
       .catch(done)

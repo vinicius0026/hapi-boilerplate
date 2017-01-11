@@ -30,7 +30,7 @@ internals.registerRoutes = function (server, next) {
               .description('User\'s username, used for login'),
             password: Joi.string().min(3).max(50).required()
               .description('User\'s password, used for login'),
-            role: Joi.array().items(Joi.string().valid('user', 'admin'))
+            scope: Joi.array().items(Joi.string().valid('user', 'admin'))
               .default(['user'])
               .description('User\'s role, used for determining what the user will be able to do in the system')
           }
