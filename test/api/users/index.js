@@ -37,10 +37,48 @@ describe('User API Tests', () => {
           .then(res => {
             expect(res.statusCode).to.equal(200)
             const list = res.result
-            expect(list).to.have.length(2)
+            expect(list).to.be.an.array()
+            list.every(item => {
+              expect(item.username).to.be.a.string()
+              expect(item.scope).to.be.an.array()
+            })
             server.stop(done)
           })
           .catch(done)
+        })
+    })
+
+    it('handles errors in db', done => {
+      let server
+      const manifest = {
+        connections: [
+          { port: 0 }
+        ],
+        registrations: [
+          { plugin: { register: './lib/auth', options: { getValidatedUser: UserModel.getValidatedUser } } },
+          { plugin: { register: './api/users', options: { db: { map: () => { throw new Error() } } } } }, // forcing error in db
+          { plugin: 'hapi-auth-cookie' }
+        ]
+      }
+
+      Server.init(manifest, internals.composeOptions)
+        .then(_server => {
+          server = _server
+
+          return server.inject({
+            url: '/api/users',
+            credentials: {
+              scope: ['user']
+            }
+          })
+        })
+        .then(res => {
+          console.log('res.result', res.result)
+          expect(res.statusCode).to.equal(500)
+          server.stop(done)
+        })
+        .catch(err => {
+          server.stop(error => done(error || err))
         })
     })
   })

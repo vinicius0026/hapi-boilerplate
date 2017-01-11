@@ -12,8 +12,6 @@ const Joi = require('joi')
 
 const internals = {}
 
-internals.db = require('./users.json')
-
 internals.model = {
   id: Joi.number().min(0),
   username: Joi.string().min(3).max(50).description('User\'s username, used for login'),
@@ -25,6 +23,7 @@ internals.model = {
 module.exports = function (_di) {
   const di = _di || {}
 
+  internals.db = require('./users.json')
   Object.assign(internals, di)
 
   return {
