@@ -117,7 +117,7 @@ to this repo, please ensure that tests pass and coverage is > 95% (ideally 100%)
 
 ## Acnowledgement
 
-Much of the things implemented in this boilerplate where extracted from
+Many of the things implemented in this boilerplate where extracted from
 [Hapijs University](https://github.com/hapijs/university) repository.
 
 ## License
